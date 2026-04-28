@@ -11,7 +11,7 @@ function PLUGIN:MisePath(ctx)
 
     -- Run pixi info to collect information about the session
     local info = json.decode(cmd.exec("pixi info --json"))
-    for env in info.environments_info do
+    for _, env in pairs(info.environments_info) do
         if env.name == env_name then
             return { env.prefix .. "/bin" }
         end
