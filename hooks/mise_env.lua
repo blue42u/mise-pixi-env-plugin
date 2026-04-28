@@ -1,41 +1,25 @@
+local cmd = require("cmd")
+
 --- Returns environment variables to set when this plugin is active
 --- Documentation: https://mise.jdx.dev/env-plugin-development.html#miseenv-hook
 --- @param ctx {options: table} Context (options = plugin configuration from mise.toml)
 --- @return table[] List of environment variable definitions with key/value pairs
 function PLUGIN:MiseEnv(ctx)
-	-- Access plugin options from mise.toml configuration
-	-- Example mise.toml:
-	--   [env_plugins.my-env-plugin]
-	--   my_option = "value"
-	local _options = ctx.options or {}
+    local env_name = ctx.options.environment or "default"
+    local result = cmd.exec("pixi shell-hook --shell bash --environment " .. env_name)
 
-	-- Return list of environment variables to set
-	local env_vars = {}
-
-	-- Example: Static environment variable
-	table.insert(env_vars, {
-		key = "MY_ENV_VAR",
-		value = "my_value",
-	})
-
-	-- Example: Dynamic environment variable from options
-	--[[
-    if options.api_key then
-        table.insert(env_vars, {
-            key = "MY_API_KEY",
-            value = options.api_key
-        })
+    local env_vars = {}
+    for line in result:gmatch("[^\n]+") do
+        -- parse lines like: export FOO="bar"
+        local key, value = line:match("^export ([%w_]+)=[\"']?(.-)[\"']?$")
+        if key and key ~= "PATH" then -- PATH handled separately in MisePath
+            table.insert(env_vars, { key = key, value = value })
+        end
     end
-    --]]
 
-	-- Example: Environment variable with computed value
-	--[[
-    local home = os.getenv("HOME")
-    table.insert(env_vars, {
-        key = "MY_CONFIG_DIR",
-        value = home .. "/.config/my-tool"
-    })
-    --]]
-
-	return env_vars
+    return {
+        cacheable = true,
+        watch_files = { "pixi.lock", "pixi.toml" },
+        env = env_vars,
+    }
 end

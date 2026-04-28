@@ -1,21 +1,21 @@
 --- Plugin metadata
 --- Documentation: https://mise.jdx.dev/env-plugin-development.html
 PLUGIN = {
-	--- Plugin name (required)
-	name = "my-env-plugin",
+    --- Plugin name (required)
+    name = "pixi-env-plugin",
 
-	--- Plugin version (required)
-	version = "0.0.1",
+    --- Plugin version (required)
+    version = "0.0.1",
 
-	--- Plugin description (optional)
-	description = "Template for mise environment plugins",
+    --- Plugin description (optional)
+    description = "Environment ",
 
-	--- Minimum mise version required (optional)
-	minMiseVersion = "2025.1.0",
+    --- Minimum mise version required (optional)
+    minMiseVersion = "2025.6.0",
 
-	--- Plugin author (optional)
-	author = "Your Name",
+    --- Plugin author (optional)
+    author = "Jonathon Anderson",
 
-	--- Plugin repository URL (optional)
-	repository = "https://github.com/your-username/mise-my-env-plugin",
+    --- Plugin repository URL (optional)
+    repository = "https://github.com/blue42u/mise-pixi-env-plugin",
 }

@@ -3,24 +3,7 @@
 --- @param ctx {options: table} Context (options = plugin configuration from mise.toml)
 --- @return string[] List of paths to prepend to PATH
 function PLUGIN:MisePath(ctx)
-	-- Access plugin options from mise.toml configuration
-	local _options = ctx.options or {}
-
-	-- Return list of paths to prepend to PATH
-	local paths = {}
-
-	-- Example: Add a path from options
-	--[[
-    if options.path_to_add then
-        table.insert(paths, options.path_to_add)
-    end
-    --]]
-
-	-- Example: Add a computed path
-	--[[
-    local home = os.getenv("HOME")
-    table.insert(paths, home .. "/.local/bin")
-    --]]
-
-	return paths
+    local env_name = ctx.options.environment or "default"
+    -- pixi envs are always at a predictable path
+    return { ".pixi/envs/" .. env_name .. "/bin" }
 end
