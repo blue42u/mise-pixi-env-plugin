@@ -6,7 +6,7 @@ local cmd = require("cmd")
 --- @return table[] List of environment variable definitions with key/value pairs
 function PLUGIN:MiseEnv(ctx)
     local env_name = ctx.options.environment or "default"
-    local result = cmd.exec("pixi shell-hook --shell bash --environment " .. env_name)
+    local result = cmd.exec("pixi shell-hook --frozen --shell bash --environment " .. env_name)
 
     local env_vars = {}
     for line in result:gmatch("[^\n]+") do
